@@ -1,0 +1,27 @@
+.btn1 {
+    transition: all .3s ease-out;
+}
+.btn1:hover {
+    margin-top:  5px;
+    cursor: pointer;    
+    background-color: green;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.upload-label{
+    display: inline-block;
+    padding: 12px 30px;
+    background: #39D2B4;
+    color: #fff;
+    font-size: 1em;
+    transition: all .4s;
+    cursor: pointer;
+}
+
+.upload-label:hover{
+    background: #34495E;
+    color: #39D2B4;
+}
