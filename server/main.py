@@ -19,9 +19,16 @@ app = FastAPI()
 
 #templates = Jinja2Templates(directory="./templates")
 
-origins = ["*"]
-methods = ["*"]
-headers = ["*"]
+origins = ["http://localhost:7500",
+           "http://apt.he.fr:80",
+           "http://apt.he.fr:7500",
+           "http://localhost:7500/",
+           "http://localhost:4040/"]
+
+
+methods = ["POST"]
+
+headers = ["Accept, Accept-Language, Content-Language , Content-Type"]
 
 
 app.add_middleware(
@@ -73,8 +80,13 @@ async def encrypt(param : Params):
     t_2.link_context(context_public_ckks)
 
     start_time = time.time()
+    
+    
     # start computing
-    enc_res_mult = mat_1 * mat_2
+    try :
+        enc_res_mult = mat_1 * mat_2
+    except :
+        enc_res_mult = mat_1
     time_diff = t_2 - t_1
     invspeed = time_diff * d
     end_time = time.time()

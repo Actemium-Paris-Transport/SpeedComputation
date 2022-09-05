@@ -47,9 +47,16 @@ if len(physical_devices) > 0:
 app = FastAPI()
 
 
-origins = ["*"]
-methods = ["*"]
-headers = ["*"]
+origins = ["http://localhost:7500",
+           "http://apt.he.fr:80",
+           "http://apt.he.fr:7500",
+           "http://localhost:7500/",
+           "http://localhost:4040/"]
+
+
+methods = ["POST"]
+
+headers = ["Accept, Accept-Language, Content-Language , Content-Type"]
 
 
 app.add_middleware(
@@ -65,7 +72,7 @@ class number_plate_detection(BaseModel):
     image_base64_1: bytes   
     image_base64_2 : bytes
 
-@app.post('/inference', status_code=200)
+@app.post('/inference_yolo', status_code=200)
 async def test(param: number_plate_detection):
 # def main(image_path : str):
     image_encoded_64_1 = param.image_base64_1
@@ -158,10 +165,7 @@ async def test(param: number_plate_detection):
         allowed_classes = list(class_names.values())
 
         crop_path = os.path.join(os.getcwd(), 'detections', 'crop', image_name)
-        try:
-            os.mkdir(crop_path)
-        except FileExistsError:
-            pass
+        
         crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB),
                         pred_bbox, crop_path, allowed_classes)
 

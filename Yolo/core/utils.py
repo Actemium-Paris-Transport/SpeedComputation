@@ -59,8 +59,9 @@ def recognize_plate(img, coords):
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     except:
         ret_img, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    # sort contours left-to-right
+    
     sorted_contours = sorted(contours, key=lambda ctr: cv2.boundingRect(ctr)[0])
+    #  sort contours left-to-right
     # create copy of gray image
     im2 = gray.copy()
     # create blank string to hold license plate number
@@ -111,6 +112,7 @@ def recognize_plate(img, coords):
     # cv2.destroyAllWindows()
     
     return plate_num
+
 
 def load_freeze_layer(model='yolov4', tiny=False):
     if tiny:

@@ -109,7 +109,7 @@ document.querySelector("#inp1").addEventListener("change", readFile2);
 
 
 // detect and get the plate number from an image
-apiYoloUrl = 'http://0.0.0.0:4040/inference';
+apiYoloUrl = '/inference_yolo';
 function yolo1() {
     const dataToSend = {
         "image_base64_1": image_encoded64_1,
@@ -164,7 +164,7 @@ form.addEventListener('submit', function (event) {
 const container = document.querySelector('.container');
 const loadGenKey = document.querySelector('.load-tuts');
 
-api_KeyGen_url = 'http://0.0.0.0:7500/Key_Generation';
+api_KeyGen_url = '/Key_Generation';
 function GenKey() {
     fetch(api_KeyGen_url)
         .then(response => response.json())
@@ -189,7 +189,7 @@ function GenKey() {
 
 
 // crypté l'image avec le contexte public
-api_crypto_endpoint_enc = 'http://0.0.0.0:8008/encrypt';
+api_crypto_endpoint_enc = '/encrypt';
 function crypto() {
     
     const dataToSend = {
@@ -234,7 +234,7 @@ function crypto() {
 
 
 //faire l'inference 
-api_infenrece = 'http://0.0.0.0:8000/inference';
+api_infenrece = '/inference';
 function Inference() {
 
     const dataToSend = {
@@ -272,7 +272,7 @@ function Inference() {
 // some preprocess before decrypt
 
   
-api_decrypt_endpoint = 'http://0.0.0.0:8008/decrypt';
+api_decrypt_endpoint = '/decrypt';
 function decrypt() {
     const dataToSend = {
         "res_enc": encResultMult,

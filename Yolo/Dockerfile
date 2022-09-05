@@ -26,4 +26,4 @@ COPY . .
 EXPOSE 4040
 
 
-CMD ["python3", "detect.py"]
+CMD ["python3", "main.py"]

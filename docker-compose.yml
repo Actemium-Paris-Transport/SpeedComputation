@@ -1,34 +1,80 @@
----
+version: "3"
 
-version : "3"
+services:
+  traefik:
+    image: traefik:v2.3
+    restart: always
+    command:
+      - --accesslog
+      - --api.insecure=true
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "80:80"
+      - "8080:8080"
+      
+  encrypt:
+    image: encrypt:v1.5
+    restart: always
+    environment:
+      - APP_PORT=8008
+      - APP_NAME=encrypt
+    expose:
+      - "8008"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.encrypt.rule=Host(`apt.he`) && Path(`/encrypt`)
 
-services : 
+  decrypt:
+    image: decrypt:v1.5
+    restart: always
+    environment:
+      - APP_PORT=8009
+      - APP_NAME=decrypt
+    expose:
+      - "8009"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.decrypt.rule=Host(`apt.he`) && Path(`/decrypt`)
 
-    EncryptDecrypt:
-        image : hb.factory.showroom.aixom.tech/rnd/crypto:v1.0
-        ports :
-          - '8008:8008'
-        
+  genkey:
+    image: genkey:v1.5
+    restart: always
+    environment:
+      - APP_PORT=7500
+      - APP_NAME=genkey
+    expose:
+      - "7500"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.genkey.rule=Host(`apt.he`)
+      # && Path(`/Key_Generation`)
 
-    Server :
-        image : hb.factory.showroom.aixom.tech/rnd/server:v1.0
+  server:
+    image: server:v1.5
+    restart: always
+    environment:
+      - APP_PORT=8000
+      - APP_NAME=server
+    expose:
+      - "8000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.server.rule=Host(`apt.he`) && Path(`/inference`)
 
-        ports :
-          - '8000:8000'
-        
-    GenKey :
-        image : hb.factory.showroom.aixom.tech/rnd/genkey:v1.0
-
-        ports :
-          - '7500:7500'
-
-    Yolo : 
-        image : hb.factory.showroom.aixom.tech/rnd/yolo:v4
-
-        ports : 
-          - '4040:4040'
-        environment :
-          - DISPLAY=$DISPLAY
-          - QT_X11_NO_MITSHM=1
-        volumes:
-          - /tmp/.X11-unix:/tmp/.X11-unix 
+  Yolo:
+    image: yolo:v1.5
+    environment:
+      - DISPLAY=$DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - APP_PORT=4040
+      - APP_NAME=yolo
+    expose:
+      - "4040"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.yolo.rule=Host(`apt.he`) && Path(`/inference_yolo`)

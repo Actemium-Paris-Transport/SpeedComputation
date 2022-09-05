@@ -14,14 +14,20 @@ app = FastAPI()
 templates = Jinja2Templates(directory="./templates")
 app.mount("/templates", StaticFiles(directory="./templates"), name="static")
 
-origins = ["*"]
+origins = ["http://apt.he.fr:80",
+           "http://apt.he.fr:7500",
+           "http://localhost:7500"]
+
+
+methods = ["GET"]
+headers = ["content-type: application/json"]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],)
+    allow_methods=methods,
+    allow_headers=headers,)
 
 
 
