@@ -47,7 +47,7 @@ $m_1$ and $m_2$ are two  plain numbers and let $c_1$ and $c_2$ their encryption 
 $$c_1 = Enc(m_1)$$
 $$c_2 = Enc(m_2)$$
 
-Operations like $c_1<c_2$ or $c_1>c_2$ or even checking equality are not possible due to the nature of encryption. Hence, simply sending encryption version of our registration numbers, would be useless. Therefore, we had to re-think the comparison. 
+Operations like $c_1 \space < \space c_2$ or $c_1 \space > \space c_2$ or even checking equality are not possible due to the nature of encryption. Hence, simply sending encryption version of our registration numbers, would be useless. Therefore, we had to re-think the comparison. 
 
 - Apply the one-hot-ecoding to each character of the registration number. This method is possible because we have a finite number of combinations (26 for alphabets and 10 for numbers).The following table shows how we used the One-Hot-Encoding
 - Multiply each charachter with it corresponding one. 
