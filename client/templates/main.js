@@ -164,7 +164,7 @@ form.addEventListener('submit', function (event) {
 const container = document.querySelector('.container');
 const loadGenKey = document.querySelector('.load-tuts');
 
-api_KeyGen_url = '/Key_Generation';
+api_KeyGen_url = '/client/Key_Generation';
 function GenKey() {
     fetch(api_KeyGen_url)
         .then(response => response.json())
@@ -189,7 +189,7 @@ function GenKey() {
 
 
 // crypté l'image avec le contexte public
-api_crypto_endpoint_enc = '/encrypt';
+api_crypto_endpoint_enc = '/client/encrypt';
 function crypto() {
     
     const dataToSend = {
@@ -272,7 +272,7 @@ function Inference() {
 // some preprocess before decrypt
 
   
-api_decrypt_endpoint = '/decrypt';
+api_decrypt_endpoint = '/client/decrypt';
 function decrypt() {
     const dataToSend = {
         "res_enc": encResultMult,

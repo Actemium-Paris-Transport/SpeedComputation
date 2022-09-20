@@ -96,15 +96,7 @@ In addition to thoses services, we implemented a reverse-proxy \ load balancer n
 - The first step is to pull the docker images : 
 
 ```python
-docker pull hb.factory.showroom.aixom.tech/general/genkey:v1.5
- ```
-
-```python
-docker pull hb.factory.showroom.aixom.tech/general/encrypt:v1.5
- ```
-
-```python
-docker pull hb.factory.showroom.aixom.tech/general/decrypt:v1.5
+docker pull hb.factory.showroom.aixom.tech/general/client:v1.5
  ```
 
 ```python
@@ -133,7 +125,7 @@ docker-compose up
 - Once all the service are up, the welcome page is located in :
 
 ```
-http://apt.he/
+http://apt.he/client/
  ```
 Where you should find the following figure
 

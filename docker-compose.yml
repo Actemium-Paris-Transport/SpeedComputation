@@ -16,7 +16,7 @@ services:
       - "8080:8080"
       
   encrypt:
-    image: encrypt:v1.5
+    image: hb.factory.showroom.aixom.tech/general/client:v1.5
     restart: always
     environment:
       - APP_PORT=8008
@@ -25,35 +25,11 @@ services:
       - "8008"
     labels:
       - traefik.enable=true
-      - traefik.http.routers.encrypt.rule=Host(`apt.he`) && Path(`/encrypt`)
+      - traefik.http.routers.encrypt.rule=Host(`apt.he`) && PathPrefix(`/client/`)
 
-  decrypt:
-    image: decrypt:v1.5
-    restart: always
-    environment:
-      - APP_PORT=8009
-      - APP_NAME=decrypt
-    expose:
-      - "8009"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.decrypt.rule=Host(`apt.he`) && Path(`/decrypt`)
-
-  genkey:
-    image: genkey:v1.5
-    restart: always
-    environment:
-      - APP_PORT=7500
-      - APP_NAME=genkey
-    expose:
-      - "7500"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.genkey.rule=Host(`apt.he`)
-      # && Path(`/Key_Generation`)
 
   server:
-    image: server:v1.5
+    image: hb.factory.showroom.aixom.tech/general/server:v1.5
     restart: always
     environment:
       - APP_PORT=8000
@@ -65,7 +41,7 @@ services:
       - traefik.http.routers.server.rule=Host(`apt.he`) && Path(`/inference`)
 
   Yolo:
-    image: yolo:v1.5
+    image: hb.factory.showroom.aixom.tech/general/yolo:v1.5
     environment:
       - DISPLAY=$DISPLAY
       - QT_X11_NO_MITSHM=1
