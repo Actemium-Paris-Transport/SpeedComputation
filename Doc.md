@@ -12,12 +12,11 @@
   <br>
 </h2>
 
-This document aims to describe the project where we propose an industrial application of Homomorphic Encryption. We start with an introduction and motivation for this project.  We point out some industrial use cases of HE in the section 1. Since this work aims to compute the vehicle speed using registration number and passing time, snapshotted from a camera.Therefore, the section 2 presents the detection and extraction of a registration plate from an image using Yolov4 and Tesseract OCR. We show in section 3, the scientific obstacles we faced in order to perform comparison between encrypted data, and how we overcame them. The encryption procedure of the registration number and passing time is presented in the section 4. The section 5 contains the presentation of our architecture.  Finally, the section 6 gives a conclusion to our project and future perspective.
+This document aims to describe the project where we propose an industrial application of Homomorphic Encryption. We start with an introduction and motivation for this project in the section 1.  Since this work aims to compute the vehicle speed using registration number and passing time, snapshotted from a camera.Therefore, the section 2 presents the detection and extraction of a registration plate from an image using Yolov4 and Tesseract OCR. We show in section 3, the scientific obstacles we faced in order to perform comparison between encrypted data, and how we overcame them. The encryption procedure of the registration number and passing time is presented in the section 4. The section 5 contains the presentation of our architecture.  Finally, the section 6 gives a conclusion to our project.
 <br><br>
 
 # Table of Contents
-0. [Introduction](#Intro)
-1. [Industrial Use Cases for HE](#IndusCase)
+1. [Introduction](#Intro)
 2. [Detection and Extration of Registration Plate Number](#DetectExtract)
 3. [Scientific Obstacles](#SO)
 4. [Encryption Procedure](#EncProcess)
@@ -30,22 +29,17 @@ This document aims to describe the project where we propose an industrial applic
 
 The topics of security and data have become almost inseparable as enterprises move more workloads to the cloud. But unlocking new uses for that data, particularly driving richer AI and machine learning, will require next-generation security. To that end, companies have been developing confidential computing to allow data to remain encrypted while it is being processed. But as a complement to that, a security process known as fully homomorphic encryption is now on the verge of making its way out of the labs and into the hands of early adopters after a long gestation period.
 
-Present techniques to secure data, consists mainly in trusting the server owner, since the server needs the secret key to decrypt the data, perform the necessary computations, encrypt the result and send back the result to the client. As depicted in the following figure. This maneuver is fallible since the server owner have access to the plain data. In that way, HE is a game changer since it permits the server owner to perform the necessary computations without having access to the plain data. Therefore, the client does not need to send the secret key among the encrypted message, which makes it even more secure. Therefore, if the encrypted message is retrieved by a hacker, it will remain secure. Because without the secret key, there is no way to retrieve the original message.
+Present techniques to secure data, consists mainly in trusting the server owner. Since the server needs the secret key to decrypt the data, in order to perform the necessary computations, then encrypt the result and send back the result to the client. As depicted in the following figure. This maneuver is fallible since the server owner have access to the plain data. In that way, HE is a game changer since it permits the server owner to perform the necessary computations without having access to the plain data. Therefore, the client does not need to send the secret key among the encrypted message, which makes it even more secure. As a consequence, if the encrypted message is retrieved by a hacker, it will remain secure. Because without the secret key, there is no way to retrieve the original message.
 
 ![imgeee](./img/FHE.jpg)
 
 Actemium Paris Transport is in charge of the maintenance of several highways in Île-de-France. Therefore, there clients have access to nearly 26000 cameras. Our goal is that APT can offer a service to its clients while having access only to an encrypted version of the data. The idea of this project is to compute the speed of a vehicle, firstly by comparing the registrations numbers captured by two cameras, and then computing the speed knowing the passing time of the vehicle and the distance between the two cameras. Since we are dealing with sensitive data such as registration number, which contains many personal informations. The use of HE in this case came by itself.
 
-<h1 name="IndusCase" align="center">Industrial Use Cases for HE</h1>
-
-
-In the healthcare industry, patient health records are referred to as electronic health records, a digital record of a patient's medical history kept by hospitals or health care providers. It includes clinical data, demographics, medical history, and medical reports. Electronic health records are official health information records
-
 
 
 <h1 name="DetectExtract" align="center">Detection and Extration of Registration Plate Number</h1>
 
-Our aim is to know if we are dealing with the same vehicle from two images. Therefore, we can compare them using the registration plate number. In order use this feature, we have to detect it first, and then extract it as a string so the machine can compare it with another registration plate number. Which is the main content of this section.
+Our aim is to know if we are dealing with the same vehicle from two images. Therefore, we can compare them using the registration plate number. In order to use this feature, we have to detect it first, and then extract it as a string so the machine can compare it with another registration plate number. Which is the main content of this section.
 
 First of all, we downloaded a pre-trained model of the Yolov4, and we performed a fine tuning with a registration plate dataset, available at [Kaggle](https://www.kaggle.com/datasets/andrewmvd/car-plate-detection) composed of $433$ images with their annotations, we would have split them into $80$ % for the training part and $20$ % for the testing part. 
 Once we had the detection with the corresponding bounding boxes of the registration plate. We went into some preprocessing steps as follow : 
@@ -98,7 +92,7 @@ if we perform $v_1 \times v_2$ ,taking into account that $size(v_1)=size(v_2)$ w
 
 $$v_3 = v_1 \times v_2 = [ 0, 1 , 0 , 0 , 0 , ... , 0]$$
 
-Know, if we sum up each character of $ v_3 $ :
+Now, if we sum up each character of $v_3$ :
 
 $$\sum v_i = 1$$
 
