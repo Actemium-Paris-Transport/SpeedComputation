@@ -18,9 +18,8 @@
 0. [Introduction](#def)
 1. [Detection and Extraction of the Registration Plate](#Detect)
 2. [Encryption Procedure](#Enc)
-3. [Architecture of Process](#Arch)
-4. [Run](#build)
-5. [Conclusion](#conc)
+3. [Run](#build)
+4. [Conclusion](#conc)
 <br><br><br><br> 
 
 
@@ -57,37 +56,6 @@ Operations like $c_1 \space < \space c_2$ or $c_1 \space > \space c_2$ or even c
 Finally, if we end up with $1$ means that we have the same registration number. On the hand, if  the result is $0$ means that the registration numbers are different.
 <br><br><br>
 
-# Architecture of Process <a name="Arch"></a>
-
-In orde to deliver a pre-industrialize product of our application, we build up different stateless API using FastAPI separating our work into different services. The following text shows the functionality of each API :
-
-<br>
-
-- Key generation API $(Client \space Part)$ : Contains only one endpoint, which accepts only GET requests and return us a JSON file containing : 1) $public \space context$ : an object containing the $public, \space evaluation$ and $relinearization \space key$. 2) the $secret \space key$ which have to be kept secret by the user and can not be shared.
-
-<br>
-
-- Detection & Extraction API $(Client \space Part)$ : Which take as input two distinct images in order to detect the registration plate and then extract the registration number and return us a JSON file containing the registration number of each image as a string.
-
-<br>
-
-- Encrypt API $(Client \space Part)$ : Contains a single endpoint which accepts POST request and receives a JSON file containing the $public \space context$ , registration number and passing time. This latter, will send back a JSON file containing encrypted version of both registration numbers and passing time.
-
-
-<br>
-
-- Server API $(Server \space Part)$ Which accepts POST requests containing encrypted data (registration number, passing time) in order to perform speed computation and comparison of registration numbers. This latter,return us an encrypted result. Result that will be sent to the Decrypt API.
-
-
-<br>
-
-- Decrypt API $(Client \space Part)$ : Contains a single endpoint which accepts POST requests containing the $secret \space key$ and the result of the speed computation received from the Server API. This latter, return us the speed of the vehicle in plain.
-
-
-
-In addition to thoses services, we implemented a reverse-proxy \ load balancer named $Traefik$ which is famous among the docker community.
-
-![img2](./img/traefik.png)
 
 <br><br><br><br> 
 
