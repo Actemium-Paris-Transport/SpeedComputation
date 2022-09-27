@@ -13,9 +13,7 @@ from io import BytesIO
 from PIL import Image
 import base64
 from imageio import imread
-# If you don't have tesseract executable in your PATH, include the following:
-# pytesseract.pytesseract.tesseract_cmd = r'<full_path_to_your_tesseract_executable>'
-# Example tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract'
+
 def recognize_plate(img, coords):
     # separate coordinates from box
     xmin, ymin, xmax, ymax = coords
@@ -128,18 +126,7 @@ def load_freeze_layer(model='yolov4', tiny=False):
     return freeze_layouts
 
 def load_weights(model, weights_file, model_name='yolov4', is_tiny=False):
-    # if is_tiny:
-    #     if model_name == 'yolov3':
-    #         layer_size = 13
-    #         output_pos = [9, 12]
-    #     else:
-    #         layer_size = 21
-    #         output_pos = [17, 20]
-    # else:
-    #     if model_name == 'yolov3':
-    #         layer_size = 75
-    #         output_pos = [58, 66, 74]
-    #     else:
+   
     layer_size = 110
     output_pos = [93, 101, 109]
     wf = open(weights_file, 'rb')

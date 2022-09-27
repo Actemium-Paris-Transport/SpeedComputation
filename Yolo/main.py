@@ -74,7 +74,6 @@ class number_plate_detection(BaseModel):
 
 @app.post('/inference_yolo', status_code=200)
 async def test(param: number_plate_detection):
-# def main(image_path : str):
     image_encoded_64_1 = param.image_base64_1
     image_encoded_64_2 = param.image_base64_2
     
@@ -96,26 +95,13 @@ async def test(param: number_plate_detection):
         weights, tags=[tag_constants.SERVING])
 
     registration_plate = []
+    # loop through images in list and run Yolov4 model on each
     for i in range(2) :
-
-        # loop through images in list and run Yolov4 model on each
-       
-        # img_trnsform , original_image_brut= utils.load_input(image_encoded_64)
-        image_encoded = image_encoded_64[i].decode('utf-8')
-        img = imread(BytesIO(base64.b64decode(image_encoded)))
-        # image_encoded = image_encoded_64[i].decode('utf-8')
-        try :
-            # original_image_bis = imread(BytesIO(base64.b64decode( image_encoded_64[i])))
-            # image_decoded = base64.b64decode(image_encoded_64[i])
-            # nparr = np.frombuffer(image_decoded, np.uint8)
-
-            
-            print("loading iamge done")
-        except : 
-            print("imread not cool !")
+        
+        image_encoded = image_encoded_64[i].decode('utf-8') #decode each image
+        img = imread(BytesIO(base64.b64decode(image_encoded))) #read image in BRG
         try : 
-            # original_image = cv2.imdecode(nparr,cv2.IMREAD_UNCHANGED)
-            original_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            original_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) #convert images from BRG to RGB
             print("great")
         except : # ("converting done !")
             print(  "prob convert from BGR to RGB")
@@ -146,8 +132,8 @@ async def test(param: number_plate_detection):
                     pred_conf, (tf.shape(pred_conf)[0], -1, tf.shape(pred_conf)[-1])),
                 max_output_size_per_class=50,
                 max_total_size=50,
-                iou_threshold=iou,  # FLAGS.iou
-                score_threshold=score  # FLAGS.score
+                iou_threshold=iou,  # iou
+                score_threshold=score  # score
             )
 
         # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, xmax, ymax
@@ -175,18 +161,14 @@ async def test(param: number_plate_detection):
                 original_image, pred_bbox, info=True, allowed_classes=allowed_classes, read_plate=True)
 
         image = Image.fromarray(image.astype(np.uint8))
-        # image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
         image.show()
         image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
-        # cv2.imwrite(output + 'detection' + str(count) + '.png', image)
         registration_plate.append(plate_number)
     return {
         "registration_number_1":registration_plate[0],
         "registration_number_2":registration_plate[1]   
             }
 
-
-# img_path = "./data/images/car4.jpg"
 
 def start(host="0.0.0.0", port=4040):
     uvicorn.run(app, host=host, port=port)

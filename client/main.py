@@ -41,34 +41,6 @@ app.add_middleware(
 
 
 
-def create_ctx_bfv():
-    ctx = ts.context(ts.SCHEME_TYPE.BFV, poly_modulus_degree=4096, plain_modulus=1032193)
-
-    ctx.generate_galois_keys()
-
-    #secret key serialization and saving
-    secret_context = ctx.serialize(save_secret_key = True) #secret context
-    secret_context_base85_bfv = base64.a85encode(secret_context)
-    #public context saving and serializaitoepfn
-    ctx.make_context_public() #make it public and drop the secret key
-    public_context_base85_bfv = base64.a85encode(ctx.serialize())
-
-    
-    return public_context_base85_bfv,secret_context_base85_bfv
-
-def create_ctx_ckks():
-    context = ts.context(ts.SCHEME_TYPE.CKKS, 8192, coeff_mod_bit_sizes=[60, 40, 40, 60])
-    context.global_scale = pow(2, 40)
-    context.generate_galois_keys()
-
-    secret_context = context.serialize(save_secret_key=True) #secret context
-    secret_context_base85_ckks = base64.a85encode(secret_context)
-
-    context.make_context_public() #drop sk
-    public_context_base85_ckks = base64.a85encode(context.serialize())
-
-    return public_context_base85_ckks, secret_context_base85_ckks
-
 
 
 
@@ -123,9 +95,10 @@ async def encrypt(param : encrypt_matricule):
     matri_1 , matri_2  ,time_1 , time_2 , distance = infromations(mat_1, mat_2, t_1 , t_2 , d)
 
     try : 
+        #decode the serialized context 
         ctx_bfv = ts.context_from(base64.a85decode(context_public_bfv))
         ctx_ckks = ts.context_from(base64.a85decode(context_public_ckks))
-        print("deserialized contox into a ts.context object")
+        print("deserialized contex into a ts.context object")
     except :
         print("problem in converting from b64 str to ts.context")
 

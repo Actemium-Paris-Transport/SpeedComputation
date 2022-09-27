@@ -3,6 +3,52 @@ from xml.etree.ElementInclude import include
 import numpy as np
 from numpy import argmax
 import tensorflow as tf
+import tenseal as ts 
+
+
+def create_ctx_bfv():
+    """create all necessary keys for the procedure, and store them in the context which 
+    is a TenSEAL object
+
+    Returns:
+        _bytes_: public context
+        _bytes_ : secret key
+    """
+    #here we use the BFV scheme because it is more suitable for integers. We will use it for the comparison
+    # set the parameters and the scheme we want to use
+    ctx = ts.context(ts.SCHEME_TYPE.BFV, poly_modulus_degree=4096, plain_modulus=1032193)
+
+    ctx.generate_galois_keys()
+
+    #secret key serialization and encoding
+    secret_context = ctx.serialize(save_secret_key = True) #secret context
+    secret_context_base85_bfv = base64.a85encode(secret_context)
+    #public context encoding and serialization
+    ctx.make_context_public() #make it public and drop the secret key
+    public_context_base85_bfv = base64.a85encode(ctx.serialize())
+
+    
+    return public_context_base85_bfv,secret_context_base85_bfv
+
+def create_ctx_ckks():
+    """create all necessary keys for the procedure, and store them in the context which 
+    is a TenSEAL object
+
+    Returns:
+        _bytes_: public context
+        _bytes_ : secret key
+    """
+    context = ts.context(ts.SCHEME_TYPE.CKKS, 8192, coeff_mod_bit_sizes=[60, 40, 40, 60])
+    context.global_scale = pow(2, 40)
+    context.generate_galois_keys()
+
+    secret_context = context.serialize(save_secret_key=True) #secret context
+    secret_context_base85_ckks = base64.a85encode(secret_context)
+
+    context.make_context_public() #drop sk
+    public_context_base85_ckks = base64.a85encode(context.serialize())
+
+    return public_context_base85_ckks, secret_context_base85_ckks
 
 
 def str2dec(s : str) -> tuple :

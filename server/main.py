@@ -72,7 +72,7 @@ async def encrypt(param : Params):
     t_1 =  ts.lazy_ckks_vector_from(base64.b64decode(t_1_seri_bytes))
     t_2 =  ts.lazy_ckks_vector_from(base64.b64decode(t_2_seri_bytes))
 
-    #linking to context
+    # linking enc_data to context
     mat_1.link_context(context_public_bfv)
     mat_2.link_context(context_public_bfv)
 
@@ -90,7 +90,8 @@ async def encrypt(param : Params):
     time_diff = t_2 - t_1
     invspeed = time_diff * d
     end_time = time.time()
-
+    
+    # serialize and encode in order to send it back 
     enc_res_mult_seri = base64.b64encode(enc_res_mult.serialize())
     invspeed_seri = base64.b64encode(invspeed.serialize())
     infrenece_time = end_time - start_time
